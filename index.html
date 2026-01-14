@@ -13,10 +13,10 @@
 
   <style>
     :root{
-      --bg: #0b1620;     /* base */
-      --bg2:#070f16;     /* base más oscuro */
+      /* Fondo estable (sin cortes) */
+      --bg:  #08121a;
+      --bg2: #050b10;
 
-      --card: rgba(255,255,255,.06);
       --text: rgba(255,255,255,.95);
       --muted: rgba(255,255,255,.70);
       --border: rgba(255,255,255,.12);
@@ -43,17 +43,34 @@
       overflow-x: hidden;
     }
 
-    /* ✅ UNA SOLA CAPA GLOBAL (FIJA) PARA EL GLOW -> sin cortes a mitad de página */
+    /* ✅ Capa sutil de “tinte” (sin banding) */
     body::before{
       content:"";
       position: fixed;
       inset: 0;
-      z-index: -1;
+      z-index: -2;
       pointer-events: none;
       background:
-        radial-gradient(900px 520px at 12% 8%, rgba(31,111,209,.16), transparent 62%),
-        radial-gradient(800px 520px at 92% 14%, rgba(59,130,196,.12), transparent 64%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(31,111,209,.10), transparent 60%);
+        radial-gradient(1200px 900px at 50% -20%, rgba(31,111,209,.05), transparent 65%),
+        radial-gradient(900px 700px at 10% 10%, rgba(59,130,196,.04), transparent 60%);
+      transform: translateZ(0);
+    }
+
+    /* ✅ Blobs con BLUR fuerte -> elimina el borde/corte del radial */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: -120px;
+      z-index: -1;
+      pointer-events: none;
+
+      background:
+        radial-gradient(500px 420px at 18% 18%, rgba(31,111,209,.38), transparent 70%),
+        radial-gradient(520px 440px at 88% 16%, rgba(59,130,196,.28), transparent 72%),
+        radial-gradient(600px 520px at 55% 105%, rgba(31,111,209,.22), transparent 75%);
+
+      filter: blur(70px);
+      opacity: .55;
       transform: translateZ(0);
     }
 
@@ -72,7 +89,7 @@
       top: 0;
       z-index: 50;
       backdrop-filter: blur(10px);
-      background: rgba(7,15,22,.70);
+      background: rgba(5,11,16,.72);
       border-bottom: 1px solid var(--border);
     }
 
@@ -121,12 +138,12 @@
       padding: 8px 12px;
       border-radius: 999px;
       font-size: .92rem;
-      border: 1px solid rgba(31,111,209,.30);
-      background: rgba(31,111,209,.07);
+      border: 1px solid rgba(31,111,209,.28);
+      background: rgba(31,111,209,.06);
       color: #d7e9ff;
     }
     .chip:hover{
-      background: rgba(31,111,209,.12);
+      background: rgba(31,111,209,.10);
       text-decoration:none;
       color: #eef6ff;
     }
@@ -162,7 +179,7 @@
 
     /* Hero */
     .hero{
-      padding: 54px 0 18px;
+      padding: 56px 0 22px;
     }
 
     .hero-grid{
@@ -179,10 +196,11 @@
       padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid rgba(31,111,209,.22);
-      background: rgba(7,15,22,.45);
+      background: rgba(5,11,16,.40);
       color: #d7e9ff;
       font-size: .92rem;
       width: fit-content;
+      backdrop-filter: blur(10px);
     }
 
     h1{
@@ -190,7 +208,7 @@
       font-size: clamp(2.1rem, 3.6vw, 3.2rem);
       line-height: 1.12;
       letter-spacing: -.6px;
-      text-shadow: 0 10px 40px rgba(0,0,0,.45);
+      text-shadow: 0 12px 44px rgba(0,0,0,.55);
     }
 
     .subtitle{
@@ -198,7 +216,7 @@
       font-size: 1.08rem;
       max-width: 62ch;
       margin: 0 0 18px;
-      text-shadow: 0 10px 40px rgba(0,0,0,.35);
+      text-shadow: 0 10px 40px rgba(0,0,0,.40);
     }
 
     .hero-actions{
@@ -218,17 +236,26 @@
     .stat{
       padding: 10px 12px;
       border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(7,15,22,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(5,11,16,.36);
       color: var(--muted);
       font-size: .95rem;
+      backdrop-filter: blur(10px);
     }
     .stat b{ color: var(--text); font-weight: 700; }
+
+    /* ✅ Tarjetas con más “sólido” y blur -> el fondo no marca líneas */
+    .hero-card,
+    .card,
+    .contact-box{
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
 
     .hero-card{
       border-radius: var(--radius);
       border: 1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      background: rgba(255,255,255,.075);
       box-shadow: var(--shadow);
       padding: 18px;
       position: relative;
@@ -238,12 +265,12 @@
     .hero-card:before{
       content:"";
       position:absolute;
-      inset:-120px;
+      inset:-140px;
       background:
-        radial-gradient(260px 260px at 20% 25%, rgba(31,111,209,.16), transparent 60%),
-        radial-gradient(300px 300px at 85% 30%, rgba(59,130,196,.12), transparent 60%);
-      filter: blur(3px);
-      opacity: .85;
+        radial-gradient(320px 320px at 20% 25%, rgba(31,111,209,.24), transparent 70%),
+        radial-gradient(380px 380px at 85% 30%, rgba(59,130,196,.18), transparent 72%);
+      filter: blur(18px);
+      opacity: .70;
       pointer-events:none;
     }
 
@@ -278,7 +305,7 @@
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
+      background: rgba(0,0,0,.16);
     }
 
     .tick{
@@ -296,14 +323,15 @@
       font-weight: 900;
     }
 
-    section{ padding: 22px 0; }
+    /* Secciones: más aire */
+    section{ padding: 30px 0; }
 
     .section-head{
       display:flex;
       align-items:flex-end;
       justify-content: space-between;
       gap: 16px;
-      margin: 22px 0 12px;
+      margin: 26px 0 12px;
     }
 
     h2{
@@ -328,8 +356,8 @@
     .card{
       grid-column: span 6;
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.07);
       padding: 18px;
       box-shadow: 0 18px 50px rgba(0,0,0,.22);
     }
@@ -355,8 +383,8 @@
     .badge{
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(31,111,209,.30);
-      background: rgba(31,111,209,.07);
+      border: 1px solid rgba(31,111,209,.28);
+      background: rgba(31,111,209,.06);
       color: #d7e9ff;
       font-size: .92rem;
     }
@@ -364,15 +392,15 @@
     .card-wide{ grid-column: span 12; }
 
     .contact{
-      margin-top: 12px;
-      border-top: 1px solid var(--border);
-      padding-top: 26px;
+      margin-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 28px;
     }
 
     .contact-box{
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.07);
       padding: 18px;
       display:flex;
       align-items:center;
@@ -403,6 +431,11 @@
       .nav-links{ gap: 10px; }
       .brand{ min-width: unset; }
     }
+
+    /* Reduce efectos en sistemas que lo pidan */
+    @media (prefers-reduced-motion: reduce){
+      body::after{ filter: blur(80px); }
+    }
   </style>
 </head>
 
@@ -413,7 +446,7 @@
       <div class="nav">
         <a class="brand" href="#top" aria-label="Coalnet">
           <!-- Cambia el src al nombre/ruta real de tu PNG -->
-          <img class="logo" src="Coalnet_logo.jpeg" alt="Logo de Coalnet" />
+          <img class="logo" src="logo.png" alt="Logo de Coalnet" />
           <div class="brand-title">
             <strong>Coalnet</strong>
             <span>Sports Data & Analytics</span>
