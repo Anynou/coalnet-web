@@ -3,151 +3,608 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Análisis deportivo basado en datos</title>
-  <meta name="description" content="APIs y análisis de datos para clubes deportivos. Toma mejores decisiones con datos objetivos." />
+  <title>Coalnet · Análisis deportivo basado en datos</title>
+  <meta name="description" content="Coalnet: APIs, modelos y dashboards para clubes deportivos. Toma mejores decisiones con datos objetivos." />
+
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
+    :root{
+      --bg: #0b1020;
+      --bg2: #070a13;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --border: rgba(255,255,255,.12);
+      --brand: #6ee7ff;     /* acento */
+      --brand2:#a78bfa;     /* acento 2 */
+      --ok: #34d399;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(110,231,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(167,139,250,.16), transparent 55%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(52,211,153,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Layout */
+    .container{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(7,10,19,.55);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 210px;
+    }
+
+    .logo{
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      padding: 6px;
+    }
+
+    .brand-title{
+      display:flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+    .brand-title strong{ font-weight: 700; letter-spacing: .2px; }
+    .brand-title span{ color: var(--muted); font-size: .9rem; }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip{
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      font-size: .92rem;
+      color: var(--muted);
+    }
+    .chip:hover{ background: rgba(255,255,255,.07); text-decoration:none; color: var(--text); }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      white-space: nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.09);
+      text-decoration:none;
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .btn-primary{
+      border: 0;
+      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      color: #061018;
+    }
+    .btn-primary:hover{ filter: brightness(1.03); }
+
+    /* Hero */
+    .hero{
+      padding: 54px 0 18px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: .92rem;
+      width: fit-content;
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+      line-height: 1.12;
+      letter-spacing: -.6px;
+    }
+
+    .subtitle{
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 62ch;
+      margin: 0 0 18px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .stats{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .stat{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .stat b{ color: var(--text); font-weight: 700; }
+
+    .hero-card{
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card:before{
+      content:"";
+      position:absolute;
+      inset:-100px;
+      background:
+        radial-gradient(220px 220px at 20% 20%, rgba(110,231,255,.22), transparent 60%),
+        radial-gradient(260px 260px at 85% 30%, rgba(167,139,250,.20), transparent 60%),
+        radial-gradient(240px 240px at 45% 90%, rgba(52,211,153,.12), transparent 60%);
+      filter: blur(2px);
+      opacity: .85;
+      pointer-events:none;
+    }
+
+    .hero-card-inner{
+      position: relative;
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+      height: 100%;
+    }
+
+    .mini-title{
+      font-weight: 700;
+      letter-spacing: .2px;
+      font-size: 1.05rem;
+    }
+
+    .list{
       margin: 0;
       padding: 0;
-      background-color: #ffffff;
-      color: #111111;
-      line-height: 1.6;
+      list-style: none;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--muted);
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
+    .li{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.12);
     }
 
-    h1, h2, h3 {
-      font-weight: 600;
+    .tick{
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(52,211,153,.14);
+      border: 1px solid rgba(52,211,153,.25);
+      color: var(--ok);
+      flex: 0 0 auto;
+      margin-top: 1px;
+      font-weight: 800;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    /* Sections */
+    section{
+      padding: 22px 0;
     }
 
-    h2 {
-      margin-top: 60px;
-      font-size: 1.6rem;
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 22px 0 12px;
     }
 
-    p {
-      font-size: 1.05rem;
-      max-width: 700px;
+    h2{
+      margin: 0;
+      font-size: 1.55rem;
+      letter-spacing: -.2px;
     }
 
-    .hero {
-      margin-top: 40px;
+    .section-desc{
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 80ch;
     }
 
-    .subtitle {
-      font-size: 1.2rem;
-      color: #444;
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
     }
 
-    .section {
-      margin-top: 50px;
+    .card{
+      grid-column: span 6;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.22);
     }
 
-    ul {
-      padding-left: 20px;
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 1.12rem;
+      letter-spacing: -.2px;
     }
 
-    li {
-      margin-bottom: 10px;
+    .card p{
+      margin: 0;
+      color: var(--muted);
     }
 
-    .contact {
-      margin-top: 60px;
-      padding-top: 30px;
-      border-top: 1px solid #eee;
+    .badges{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
     }
 
-    a {
-      color: #0066cc;
-      text-decoration: none;
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .card-wide{ grid-column: span 12; }
+
+    /* Contact */
+    .contact{
+      margin-top: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 26px;
     }
 
-    footer {
-      margin-top: 80px;
-      font-size: 0.9rem;
-      color: #777;
+    .contact-box{
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      padding: 18px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contact-info{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--muted);
+    }
+    .contact-info b{ color: var(--text); }
+
+    footer{
+      padding: 28px 0 34px;
+      color: rgba(255,255,255,.55);
+      font-size: .92rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 26px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .card{ grid-column: span 12; }
+      .nav-links{ gap: 10px; }
+      .brand{ min-width: unset; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="Coalnet">
+          <!-- Cambia el src al nombre/ruta real de tu PNG -->
+          <img class="logo" src="Coalnet_logo.jpeg" alt="Logo de Coalnet" />
+          <div class="brand-title">
+            <strong>Coalnet</strong>
+            <span>Sports Data & Analytics</span>
+          </div>
+        </a>
 
-    <!-- HERO -->
+        <nav class="nav-links" aria-label="Navegación">
+          <a class="chip" href="#servicios">Servicios</a>
+          <a class="chip" href="#casos">Casos de uso</a>
+          <a class="chip" href="#contacto">Contacto</a>
+          <a class="btn btn-primary" href="mailto:contacto@coalnet.es">Solicitar info</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="top" class="container">
     <section class="hero">
-      <h1>Análisis deportivo basado en datos</h1>
-      <p class="subtitle">
-        APIs, modelos y dashboards para clubes que quieren tomar mejores decisiones deportivas.
-      </p>
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">📊 Datos accionables · ⚽ Decisiones mejores · 🤝 Enfoque club</div>
+          <h1>Análisis deportivo basado en datos para ganar ventaja competitiva</h1>
+          <p class="subtitle">
+            En Coalnet desarrollamos <b>APIs, modelos y dashboards</b> para clubes que quieren
+            decidir mejor en <b>scouting, rendimiento y análisis del rival</b>.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contacto">Hablemos</a>
+            <a class="btn" href="#servicios">Ver servicios</a>
+            <a class="btn" href="https://www.linkedin.com/company/coalnet-data" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+
+          <div class="stats" aria-label="Indicadores">
+            <div class="stat"><b>APIs</b> para jugadores, partidos y métricas</div>
+            <div class="stat"><b>Dashboards</b> claros para staff técnico</div>
+            <div class="stat"><b>Automatización</b> de informes post-partido</div>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Qué obtienes">
+          <div class="hero-card-inner">
+            <div class="mini-title">Qué obtienes con Coalnet</div>
+            <ul class="list">
+              <li class="li"><span class="tick">✓</span><span><b>Decisiones con contexto</b>: menos intuición, más evidencia.</span></li>
+              <li class="li"><span class="tick">✓</span><span><b>Procesos más rápidos</b>: informes y análisis repetibles.</span></li>
+              <li class="li"><span class="tick">✓</span><span><b>Visión integrada</b>: rendimiento, scouting y rival en un mismo sistema.</span></li>
+              <li class="li"><span class="tick">✓</span><span><b>Entregables accionables</b>: KPIs, alertas, comparativas y recomendaciones.</span></li>
+            </ul>
+            <div style="margin-top:auto; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn btn-primary" href="mailto:contacto@coalnet.es">📧 Escribir email</a>
+              <a class="btn" href="https://x.com/Coalnet_data" target="_blank" rel="noopener">🐦 X / Twitter</a>
+            </div>
+          </div>
+        </aside>
+      </div>
     </section>
 
-    <!-- PROBLEMA -->
-    <section class="section">
-      <h2>El problema</h2>
-      <p>
-        Muchos clubes toman decisiones clave —alineaciones, fichajes, análisis del rival—
-        con información incompleta, procesos manuales o datos poco estructurados.
-      </p>
-    </section>
+    <!-- PROBLEMA / SOLUCIÓN -->
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Del dato a la decisión</h2>
+          <p class="section-desc">
+            Muchos clubes siguen trabajando con información dispersa, procesos manuales y métricas difíciles de interpretar.
+            Nosotros lo convertimos en un sistema claro, repetible y útil para el día a día.
+          </p>
+        </div>
+      </div>
 
-    <!-- SOLUCION -->
-    <section class="section">
-      <h2>La solución</h2>
-      <p>
-        Desarrollo soluciones de análisis deportivo que convierten datos en información clara
-        y accionable para cuerpos técnicos y direcciones deportivas.
-      </p>
+      <div class="grid">
+        <div class="card">
+          <h3>El problema</h3>
+          <p>
+            Decisiones clave (alineaciones, fichajes, análisis del rival) con datos incompletos, poco estructurados o
+            sin una capa de interpretación que ayude a actuar.
+          </p>
+        </div>
+        <div class="card">
+          <h3>La solución</h3>
+          <p>
+            Soluciones de análisis deportivo que convierten datos en <b>insights claros y accionables</b>
+            para cuerpos técnicos y direcciones deportivas.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- SERVICIOS -->
-    <section class="section">
-      <h2>Qué ofrezco</h2>
-      <ul>
-        <li>APIs de datos deportivos (jugadores, partidos, eventos, métricas)</li>
-        <li>Análisis de rendimiento individual y colectivo</li>
-        <li>Scouting basado en datos objetivos</li>
-        <li>Dashboards e informes automáticos post-partido</li>
-      </ul>
+    <section id="servicios">
+      <div class="section-head">
+        <div>
+          <h2>Servicios</h2>
+          <p class="section-desc">Paquetes modulares: puedes empezar por una pieza (API, dashboard, informe) y escalar cuando quieras.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>APIs deportivas</h3>
+          <p>Datos de jugadores, partidos, eventos y métricas listas para integrar en tu ecosistema.</p>
+          <div class="badges">
+            <span class="badge">Jugadores</span>
+            <span class="badge">Partidos</span>
+            <span class="badge">Eventos</span>
+            <span class="badge">Métricas avanzadas</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Rendimiento individual y colectivo</h3>
+          <p>KPIs, tendencias y comparativas para entender el rendimiento y tomar decisiones operativas.</p>
+          <div class="badges">
+            <span class="badge">KPIs</span>
+            <span class="badge">Tendencias</span>
+            <span class="badge">Benchmarking</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Scouting basado en datos</h3>
+          <p>Identificación de perfiles por rol y shortlist objetiva con criterios replicables.</p>
+          <div class="badges">
+            <span class="badge">Perfiles</span>
+            <span class="badge">Shortlists</span>
+            <span class="badge">Comparador</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Dashboards e informes automáticos</h3>
+          <p>Visualización clara para staff: post-partido, semanal o por competición.</p>
+          <div class="badges">
+            <span class="badge">Post-partido</span>
+            <span class="badge">Automatización</span>
+            <span class="badge">Dashboards</span>
+          </div>
+        </div>
+
+        <div class="card card-wide">
+          <h3>Cómo trabajamos</h3>
+          <p>
+            1) Definimos objetivos (scouting, rival, rendimiento) ·
+            2) Conectamos y limpiamos datos ·
+            3) Diseñamos métricas/visualizaciones ·
+            4) Entregamos un sistema que el club puede usar de forma recurrente.
+          </p>
+        </div>
+      </div>
     </section>
 
-    <!-- CASO USO -->
-    <section class="section">
-      <h2>Casos de uso</h2>
-      <ul>
-        <li>Identificación de perfiles de jugadores por rol</li>
-        <li>Comparación de rendimiento entre equipos y temporadas</li>
-        <li>Análisis del rival para la preparación de partidos</li>
-      </ul>
+    <!-- CASOS DE USO -->
+    <section id="casos">
+      <div class="section-head">
+        <div>
+          <h2>Casos de uso</h2>
+          <p class="section-desc">Ejemplos típicos donde Coalnet aporta valor desde el primer mes.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Perfiles de jugadores por rol</h3>
+          <p>Filtros y comparativas por posición/rol con métricas coherentes y contexto de liga.</p>
+        </div>
+        <div class="card">
+          <h3>Comparación entre equipos y temporadas</h3>
+          <p>Seguimiento del rendimiento con series temporales, tendencias y cambios de estilo.</p>
+        </div>
+        <div class="card card-wide">
+          <h3>Análisis del rival</h3>
+          <p>
+            Preparación de partido con patrones, fortalezas/debilidades, KPIs clave y puntos de explotación:
+            todo presentado en un formato fácil de consumir por el staff.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- CONTACTO -->
-    <section class="contact">
-      <h2>Contacto</h2>
-      <p>
-        📧 <a href="mailto:contacto@coalnet.es">contacto@coalnet.es</a><br />
-        🔗 <a href="https://www.linkedin.com/company/coalnet-data" target="_blank">LinkedIn</a><br />
-        🐦 <a href="https://x.com/Coalnet_data" target="_blank">X / Twitter</a>
-      </p>
+    <section id="contacto" class="contact">
+      <div class="section-head">
+        <div>
+          <h2>Contacto</h2>
+          <p class="section-desc">Cuéntame tu caso y te digo la mejor forma de empezar (rápida y sin fricción).</p>
+        </div>
+      </div>
+
+      <div class="contact-box">
+        <div class="contact-info">
+          <div><b>Email:</b> <a href="mailto:contacto@coalnet.es">contacto@coalnet.es</a></div>
+          <div><b>LinkedIn:</b> <a href="https://www.linkedin.com/company/coalnet-data" target="_blank" rel="noopener">Coalnet</a></div>
+          <div><b>X:</b> <a href="https://x.com/Coalnet_data" target="_blank" rel="noopener">@Coalnet_data</a></div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="mailto:contacto@coalnet.es">Enviar email</a>
+          <a class="btn" href="#servicios">Ver servicios</a>
+        </div>
+      </div>
     </section>
 
     <footer>
-      © 2026 · Análisis deportivo basado en datos
+      © 2026 · Coalnet · Análisis deportivo basado en datos
     </footer>
-
-  </div>
+  </main>
 </body>
 </html>
