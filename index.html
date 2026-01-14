@@ -13,8 +13,8 @@
 
   <style>
     :root{
-      /* Fondo estable (sin cortes) */
-      --bg:  #08121a;
+      /* Corporate: fondo prácticamente plano (sin “cortes” ni banding visible) */
+      --bg:  #071018;
       --bg2: #050b10;
 
       --text: rgba(255,255,255,.95);
@@ -25,7 +25,7 @@
       --brand: #1f6fd1;
       --brand-soft: #3b82c4;
 
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --shadow: 0 16px 46px rgba(0,0,0,.32);
       --radius: 18px;
       --max: 1120px;
     }
@@ -43,33 +43,19 @@
       overflow-x: hidden;
     }
 
-    /* ✅ Capa sutil de “tinte” (sin banding) */
+    /* ✅ Corporate: un único “wash” sutil (sin bordes de radial) */
     body::before{
       content:"";
       position: fixed;
       inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      background:
-        radial-gradient(1200px 900px at 50% -20%, rgba(31,111,209,.05), transparent 65%),
-        radial-gradient(900px 700px at 10% 10%, rgba(59,130,196,.04), transparent 60%);
-      transform: translateZ(0);
-    }
-
-    /* ✅ Blobs con BLUR fuerte -> elimina el borde/corte del radial */
-    body::after{
-      content:"";
-      position: fixed;
-      inset: -120px;
       z-index: -1;
       pointer-events: none;
-
-      background:
-        radial-gradient(500px 420px at 18% 18%, rgba(31,111,209,.38), transparent 70%),
-        radial-gradient(520px 440px at 88% 16%, rgba(59,130,196,.28), transparent 72%),
-        radial-gradient(600px 520px at 55% 105%, rgba(31,111,209,.22), transparent 75%);
-
-      filter: blur(70px);
+      background: linear-gradient(
+        135deg,
+        rgba(31,111,209,.08),
+        rgba(7,16,24,0) 45%,
+        rgba(59,130,196,.06)
+      );
       opacity: .55;
       transform: translateZ(0);
     }
@@ -89,8 +75,8 @@
       top: 0;
       z-index: 50;
       backdrop-filter: blur(10px);
-      background: rgba(5,11,16,.72);
-      border-bottom: 1px solid var(--border);
+      background: rgba(5,11,16,.82);
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
 
     .nav{
@@ -113,8 +99,8 @@
       height: 40px;
       border-radius: 12px;
       object-fit: contain;
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
       padding: 6px;
     }
 
@@ -138,14 +124,14 @@
       padding: 8px 12px;
       border-radius: 999px;
       font-size: .92rem;
-      border: 1px solid rgba(31,111,209,.28);
-      background: rgba(31,111,209,.06);
-      color: #d7e9ff;
+      border: 1px solid rgba(31,111,209,.24);
+      background: rgba(31,111,209,.05);
+      color: rgba(255,255,255,.85);
     }
     .chip:hover{
-      background: rgba(31,111,209,.10);
+      background: rgba(31,111,209,.08);
       text-decoration:none;
-      color: #eef6ff;
+      color: rgba(255,255,255,.95);
     }
 
     .btn{
@@ -155,7 +141,7 @@
       gap: 10px;
       padding: 10px 14px;
       border-radius: 12px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
       color: var(--text);
       font-weight: 600;
@@ -164,7 +150,7 @@
     }
     .btn:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,.09);
+      background: rgba(255,255,255,.085);
       text-decoration:none;
       border-color: rgba(255,255,255,.18);
     }
@@ -173,18 +159,18 @@
       border: 0;
       background: linear-gradient(135deg, var(--brand), var(--brand-soft));
       color: #ffffff;
-      font-weight: 600;
+      font-weight: 700;
     }
     .btn-primary:hover{ filter: brightness(1.05); }
 
     /* Hero */
     .hero{
-      padding: 56px 0 22px;
+      padding: 56px 0 28px;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.15fr .85fr;
       gap: 26px;
       align-items: stretch;
     }
@@ -195,9 +181,9 @@
       gap: 10px;
       padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(31,111,209,.22);
-      background: rgba(5,11,16,.40);
-      color: #d7e9ff;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(5,11,16,.55);
+      color: rgba(255,255,255,.82);
       font-size: .92rem;
       width: fit-content;
       backdrop-filter: blur(10px);
@@ -237,42 +223,33 @@
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(5,11,16,.36);
+      background: rgba(5,11,16,.50);
       color: var(--muted);
       font-size: .95rem;
       backdrop-filter: blur(10px);
     }
     .stat b{ color: var(--text); font-weight: 700; }
 
-    /* ✅ Tarjetas con más “sólido” y blur -> el fondo no marca líneas */
+    /* ✅ Corporate: tarjetas más opacas (el fondo NO “marca” líneas) */
     .hero-card,
     .card,
     .contact-box{
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      background: rgba(10,16,22,.72);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
     }
 
     .hero-card{
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.075);
-      box-shadow: var(--shadow);
       padding: 18px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-card:before{
-      content:"";
-      position:absolute;
-      inset:-140px;
-      background:
-        radial-gradient(320px 320px at 20% 25%, rgba(31,111,209,.24), transparent 70%),
-        radial-gradient(380px 380px at 85% 30%, rgba(59,130,196,.18), transparent 72%);
-      filter: blur(18px);
-      opacity: .70;
-      pointer-events:none;
-    }
+    /* Sin glow interno fuerte: corporate limpio */
+    .hero-card:before{ content:none; }
 
     .hero-card-inner{
       position: relative;
@@ -305,7 +282,7 @@
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
+      background: rgba(0,0,0,.18);
     }
 
     .tick{
@@ -315,23 +292,23 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      background: rgba(31,111,209,.14);
-      border: 1px solid rgba(31,111,209,.30);
-      color: #9fd0ff;
+      background: rgba(31,111,209,.18);
+      border: 1px solid rgba(31,111,209,.32);
+      color: rgba(255,255,255,.92);
       flex: 0 0 auto;
       margin-top: 1px;
       font-weight: 900;
     }
 
-    /* Secciones: más aire */
-    section{ padding: 30px 0; }
+    /* Más separación: sensación corporate y evita que nada “coincida” visualmente */
+    section{ padding: 34px 0; }
 
     .section-head{
       display:flex;
       align-items:flex-end;
       justify-content: space-between;
       gap: 16px;
-      margin: 26px 0 12px;
+      margin: 28px 0 12px;
     }
 
     h2{
@@ -356,10 +333,7 @@
     .card{
       grid-column: span 6;
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.07);
       padding: 18px;
-      box-shadow: 0 18px 50px rgba(0,0,0,.22);
     }
 
     .card h3{
@@ -383,9 +357,9 @@
     .badge{
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(31,111,209,.28);
-      background: rgba(31,111,209,.06);
-      color: #d7e9ff;
+      border: 1px solid rgba(31,111,209,.22);
+      background: rgba(31,111,209,.05);
+      color: rgba(255,255,255,.86);
       font-size: .92rem;
     }
 
@@ -394,13 +368,11 @@
     .contact{
       margin-top: 10px;
       border-top: 1px solid rgba(255,255,255,.10);
-      padding-top: 28px;
+      padding-top: 30px;
     }
 
     .contact-box{
       border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.07);
       padding: 18px;
       display:flex;
       align-items:center;
@@ -430,11 +402,6 @@
       .card{ grid-column: span 12; }
       .nav-links{ gap: 10px; }
       .brand{ min-width: unset; }
-    }
-
-    /* Reduce efectos en sistemas que lo pidan */
-    @media (prefers-reduced-motion: reduce){
-      body::after{ filter: blur(80px); }
     }
   </style>
 </head>
